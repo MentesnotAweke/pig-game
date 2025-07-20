@@ -1,49 +1,54 @@
 import random
 
-def roll_dice():
+
+def roll():
     min_value = 1
     max_value = 6
     roll = random.randint(min_value, max_value)
+
     return roll
+
+
 while True:
-    players = input("Enter the number of players: (2-4):")
+    players = input("Enter the number of players (2 - 4): ")
     if players.isdigit():
         players = int(players)
         if 2 <= players <= 4:
             break
         else:
-            print("the number of players must be between 2 and 4.")
+            print("Must be between 2 - 4 players.")
     else:
-        print("Please enter a number between 2 and 4.")
+        print("Invalid, try again.")
+
 max_score = 10
 player_scores = [0 for _ in range(players)]
-winner_found = False
 
-while not winner_found:
+while max(player_scores) < max_score:
     for player_idx in range(players):
-        print(f"\nPlayer {player_idx + 1}'s turn\n")
+        print("\nPlayer number", player_idx + 1, "turn has just started!")
+        print("Your total score is:", player_scores[player_idx], "\n")
         current_score = 0
 
         while True:
-            should_roll = input("Do you want to roll the dice? (y): ").strip().lower()
-            if should_roll != 'y':
+            should_roll = input("Would you like to roll (y)? ")
+            if should_roll.lower() != "y":
                 break
 
-            value = roll_dice()
+            value = roll()
             if value == 1:
-                print("You rolled a 1! Turn over. You lose all points for this turn.")
+                print("You rolled a 1! Turn done!")
                 current_score = 0
                 break
             else:
                 current_score += value
-                print(f"You rolled a {value}. Current turn score: {current_score}")
+                print("You rolled a:", value)
+
+            print("Your score is:", current_score)
 
         player_scores[player_idx] += current_score
-        print(f"Total score for Player {player_idx + 1}: {player_scores[player_idx]}")
+        print("Your total score is:", player_scores[player_idx])
 
-        if player_scores[player_idx] >= max_score:
-            print(f"\nPlayer {player_idx + 1} wins with a score of {player_scores[player_idx]}!")
-            winner_found = True
-            break
-
-
+max_score = max(player_scores)
+winning_idx = player_scores.index(max_score)
+print("Player number", winning_idx + 1,
+      "is the winner with a score of:", max_score)
